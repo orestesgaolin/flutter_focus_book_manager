@@ -1,0 +1,11 @@
+{
+    "@@locale": "pl",
+    "cover": "Okładka",
+    "title": "Tytuł",
+    "authorName": "Autor",
+    "year": "Rok",
+    "language": "Język",
+    "books": "Książki",
+    "authors": "Autorzy",
+    "settings": "Ustawienia"
+}

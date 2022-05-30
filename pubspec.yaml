@@ -8,11 +8,15 @@ environment:
 
 dependencies:
   bloc: ^8.0.3
+  equatable: ^2.0.3
+  flex_color_scheme: ^5.0.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
   flutter_localizations:
     sdk: flutter
+  flutter_svg: ^1.1.0
+  google_fonts: ^3.0.1
   intl: ^0.17.0
 
 dev_dependencies:
@@ -25,3 +29,38 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  assets:
+    - assets/images/
+
+flutter_gen:
+  output: lib/gen/
+  line_length: 80
+
+  integrations:
+    flutter_svg: true
+    flare_flutter: false
+    rive: false
+
+  assets:
+    # Optional
+    enabled: true
+    # Optional
+    # Set to true if you want this package to be a package dependency
+    # See: https://flutter.dev/docs/development/ui/assets-and-images#from-packages
+    package_parameter_enabled: false
+    # Optional
+    # Avaliable values:
+    # - camel-case
+    # - snake-case
+    # - dot-delimiter
+    style: dot-delimiter
+
+  fonts:
+    # Optional
+    enabled: true
+
+  colors:
+    # Optional
+    enabled: true
+    # Optional
+    inputs: []

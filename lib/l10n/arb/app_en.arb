@@ -1,7 +1,11 @@
 {
     "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    }
+    "cover": "Cover",
+    "title": "Title",
+    "authorName": "Author",
+    "year": "Year",
+    "language": "Language",
+    "books": "Books",
+    "authors": "Authors",
+    "settings": "Settings"
 }
