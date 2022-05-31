@@ -35,8 +35,10 @@ class _FocusTreeState extends State<FocusTree> {
             child: SelectableText(tree ?? ''),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 12,
+          runSpacing: 12,
           children: [
             ElevatedButton(
               focusNode: focusNode1,

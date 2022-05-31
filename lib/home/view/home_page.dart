@@ -2,6 +2,7 @@ import 'package:book_manager/focus_tree/focus_tree.dart';
 import 'package:book_manager/home/home.dart';
 import 'package:book_manager/home/view/adaptive_scaffold.dart';
 import 'package:book_manager/l10n/l10n.dart';
+import 'package:book_manager/settings/settings.dart';
 import 'package:book_manager/table/table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,7 +67,7 @@ class HomeView extends StatelessWidget {
           ),
           ExcludeFocus(
             excluding: state != 2,
-            child: const SizedBox(),
+            child: const SettingsView(),
           ),
         ],
       ),

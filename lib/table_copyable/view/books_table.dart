@@ -12,69 +12,81 @@ const _rowHeight = 60.0;
 class BooksTableView extends StatelessWidget {
   const BooksTableView({
     required this.books,
+    this.horizontallyScrollable = false,
     super.key,
   });
 
   final List<Book> books;
+  final bool horizontallyScrollable;
 
   @override
   Widget build(BuildContext context) {
     final tableState = context.watch<table.TableCubit<Book>>().state;
-    return ListView.separated(
-      itemCount: books.length,
-      separatorBuilder: (context, index) => const Divider(height: 1),
-      itemBuilder: (context, index) {
-        if (index == 0) {
-          return Row(
-            children: [
-              for (final property in BookProperty.values)
-                _Header(property: property),
-            ],
-          );
-        }
-        final book = books[index - 1];
-        return ColoredBox(
-          color: index.isEven
-              ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.08)
-              : Theme.of(context).colorScheme.onPrimary.withOpacity(0.25),
-          child: Row(
-            children: [
-              for (final property in BookProperty.values)
-                if (property == BookProperty.imageLink)
-                  Padding(
-                    padding: const EdgeInsets.all(2),
-                    child: Image.asset(
-                      'assets/${book.imageLink!}',
-                      fit: BoxFit.contain,
-                      width: 40,
-                      height: _rowHeight,
+
+    return SizedBox(
+      width: horizontallyScrollable ? 800 : null,
+      child: ListView.separated(
+        itemCount: books.length,
+        separatorBuilder: (context, index) => const Divider(height: 1),
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Row(
+              children: [
+                for (final property in BookProperty.values)
+                  _Header(property: property),
+              ]
+                  .map(
+                    (e) => Expanded(
+                      child: e,
                     ),
                   )
-                else if (property == BookProperty.read)
-                  Checkbox(
-                    value: book.read,
-                    onChanged: (value) {
-                      Actions.invoke(context, ToggleReadIntent(book));
-                    },
+                  .toList(),
+            );
+          }
+          final book = books[index - 1];
+          return ColoredBox(
+            color: index.isEven
+                ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.08)
+                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.25),
+            child: Row(
+              children: [
+                for (final property in BookProperty.values)
+                  if (property == BookProperty.imageLink)
+                    Padding(
+                      padding: const EdgeInsets.all(2),
+                      child: Image.asset(
+                        'assets/${book.imageLink!}',
+                        fit: BoxFit.contain,
+                        width: 40,
+                        height: _rowHeight,
+                      ),
+                    )
+                  else if (property == BookProperty.read)
+                    Checkbox(
+                      value: book.read,
+                      onChanged: (value) {
+                        Actions.invoke(context, ToggleReadIntent(book));
+                      },
+                    )
+                  else
+                    MyDataCell(
+                      book: book,
+                      property: property,
+                      index: index,
+                      isEdited: tableState.editingLocation?.entity == book &&
+                          tableState.editingLocation?.column == property.index,
+                    )
+              ]
+                  .map(
+                    (e) => Expanded(
+                      child: e,
+                    ),
                   )
-                else
-                  MyDataCell(
-                    book: book,
-                    property: property,
-                    index: index,
-                    isEdited: tableState.editingLocation?.entity == book &&
-                        tableState.editingLocation?.column == property.index,
-                  )
-            ]
-                .map(
-                  (e) => Expanded(
-                    child: e,
-                  ),
-                )
-                .toList(),
-          ),
-        );
-      },
+                  .toList(),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -142,25 +154,23 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: InkWell(
-        onTap: property.isSortable
-            ? () {
-                Actions.invoke(
-                  context,
-                  SortIntent(property.index, true),
-                );
-              }
-            : null,
-        child: SizedBox(
-          height: _rowHeight,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Text(
-                property.localized(context),
-              ),
+    return InkWell(
+      onTap: property.isSortable
+          ? () {
+              Actions.invoke(
+                context,
+                SortIntent(property.index, true),
+              );
+            }
+          : null,
+      child: SizedBox(
+        height: _rowHeight,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              property.localized(context),
             ),
           ),
         ),
