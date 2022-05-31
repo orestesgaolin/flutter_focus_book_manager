@@ -1,6 +1,8 @@
 # Book Manager
 
-Projects aiming to showcase focus management in Flutter using `Actions` and `Shortcuts` widgets.
+Project aiming to showcase focus management in Flutter using `Actions` and `Shortcuts` widgets.
+
+![screenshot](./docs/screenshot.png)
 
 ---
 
@@ -14,8 +16,6 @@ To run:
 $ flutter run --target lib/main.dart
 
 ```
-
----
 
 ---
 
