@@ -2,6 +2,8 @@
 
 Project aiming to showcase focus management in Flutter using `Actions` and `Shortcuts` widgets.
 
+[See demo](https://roszkowski.dev/focus/)
+
 ![screenshot](./docs/screenshot.png)
 
 ---
