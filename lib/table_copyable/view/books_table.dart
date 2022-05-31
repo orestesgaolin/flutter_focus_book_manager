@@ -7,6 +7,8 @@ import 'package:book_manager/table/table.dart' as table;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+const _rowHeight = 60.0;
+
 class BooksTableView extends StatelessWidget {
   const BooksTableView({
     required this.books,
@@ -45,7 +47,7 @@ class BooksTableView extends StatelessWidget {
                       'assets/${book.imageLink!}',
                       fit: BoxFit.contain,
                       width: 40,
-                      height: 50,
+                      height: _rowHeight,
                     ),
                   )
                 else if (property == BookProperty.read)
@@ -109,7 +111,7 @@ class MyDataCell extends StatelessWidget {
           );
         },
         child: SizedBox(
-          height: 60,
+          height: _rowHeight,
           child: Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -150,10 +152,16 @@ class _Header extends StatelessWidget {
                 );
               }
             : null,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            property.localized(context),
+        child: SizedBox(
+          height: _rowHeight,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                property.localized(context),
+              ),
+            ),
           ),
         ),
       ),

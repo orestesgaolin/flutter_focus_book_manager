@@ -27,12 +27,6 @@ class BooksTable extends StatelessWidget {
         //   return BooksActions(child: BooksTableView(books: books));
         // },
         builder: (context, box) {
-          if (box.maxWidth < 800) {
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: BooksActions(child: copy.BooksTableView(books: books)),
-            );
-          }
           return BooksActions(child: copy.BooksTableView(books: books));
         },
       ),
