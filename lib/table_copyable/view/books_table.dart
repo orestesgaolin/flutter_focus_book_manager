@@ -1,5 +1,6 @@
 // ignore_for_file: unused_element
 
+import 'package:book_manager/actions/actions.dart';
 import 'package:book_manager/books/books.dart';
 import 'package:book_manager/l10n/l10n.dart';
 import 'package:book_manager/table/table.dart' as table;
@@ -90,13 +91,13 @@ class MyDataCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Actions(
       actions: {
-        table.CopyIntent: table.CopyAction(book.valueForProperty(property)),
+        CopyIntent: CopyAction(book.valueForProperty(property)),
       },
       child: InkWell(
         onTap: () {
           Actions.invoke(
             context,
-            table.EditCellIntent(
+            EditCellIntent(
               index,
               property.index,
               book,
@@ -141,7 +142,7 @@ class _Header extends StatelessWidget {
             ? () {
                 Actions.invoke(
                   context,
-                  table.SortIntent(property.index, true),
+                  SortIntent(property.index, true),
                 );
               }
             : null,

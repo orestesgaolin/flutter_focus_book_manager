@@ -1,4 +1,4 @@
-import 'package:book_manager/table/table.dart';
+import 'package:book_manager/actions/actions.dart';
 import 'package:flutter/material.dart';
 
 class EditableCellContent<T> extends StatefulWidget {
@@ -26,6 +26,14 @@ class _EditableCellContentState<T> extends State<EditableCellContent<T>> {
     super.initState();
     controller = TextEditingController();
     focusNode = FocusNode();
+    focusNode.addListener(() {
+      if (focusNode.hasPrimaryFocus == false) {
+        Actions.invoke(
+          context,
+          const DismissByLosingFocusIntent(),
+        );
+      }
+    });
   }
 
   @override
@@ -38,6 +46,7 @@ class _EditableCellContentState<T> extends State<EditableCellContent<T>> {
   @override
   void didUpdateWidget(covariant EditableCellContent<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     if (oldWidget.isEdited == false && widget.isEdited == true) {
       focusNode.requestFocus();
       controller.text = widget.content ?? '';
@@ -70,6 +79,8 @@ class _EditableCellContentState<T> extends State<EditableCellContent<T>> {
         },
       );
     }
-    return Text(widget.content ?? '');
+    return Text(
+      widget.content ?? '',
+    );
   }
 }
