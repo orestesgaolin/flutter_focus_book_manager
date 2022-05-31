@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// An ActionDispatcher that logs all the actions that it invokes.
@@ -30,6 +31,8 @@ class LoggingActionDispatcher extends ActionDispatcher {
     if (currentOverlay?.mounted == true) {
       currentOverlay?.remove();
     }
+    final intentName = intent.toStringShort();
+    final actionName = action.toStringShort();
 
     final overlayEntry = OverlayEntry(
       builder: (context) {
@@ -46,13 +49,13 @@ class LoggingActionDispatcher extends ActionDispatcher {
                     child: Column(
                       children: [
                         Text(
-                          'Intent: ${intent.toStringShort()}',
+                          'Intent: $intentName',
                           style: const TextStyle(
                             fontSize: 30,
                           ),
                         ),
                         Text(
-                          'Action: ${action.toStringShort()}',
+                          'Action: $actionName',
                           style: const TextStyle(
                             fontSize: 15,
                           ),
