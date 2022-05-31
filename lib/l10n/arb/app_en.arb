@@ -7,5 +7,6 @@
     "language": "Language",
     "books": "Books",
     "authors": "Authors",
-    "settings": "Settings"
+    "settings": "Settings",
+    "readBook": "Book Read"
 }

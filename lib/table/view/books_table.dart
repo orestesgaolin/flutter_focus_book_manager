@@ -53,6 +53,8 @@ extension on BookProperty {
         return context.l10n.year;
       case BookProperty.language:
         return context.l10n.language;
+      case BookProperty.read:
+        return context.l10n.readBook;
     }
   }
 }
@@ -183,7 +185,16 @@ class BooksTableView extends StatelessWidget {
                           .read<TableCubit<Book>>()
                           .setEditingLocation(index, property.index, book);
                     },
-                  ),
+                  )
+                else if (property == BookProperty.read)
+                  DataCell(
+                    Checkbox(
+                      value: book.read,
+                      onChanged: (value) {
+                        Actions.invoke(context, ToggleReadIntent(book));
+                      },
+                    ),
+                  )
             ],
           );
         },

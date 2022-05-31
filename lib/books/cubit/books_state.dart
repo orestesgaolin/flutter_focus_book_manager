@@ -40,6 +40,24 @@ class BooksState extends Equatable {
 
         case BookProperty.imageLink:
           return 0;
+        case BookProperty.read:
+          if (booksSortOrder.sortAscending) {
+            if (a.read == b.read) {
+              return a.title?.compareTo(b.title ?? '') ?? 0;
+            }
+            if (b.read) {
+              return 1;
+            }
+            return -1;
+          } else {
+            if (a.read == b.read) {
+              return b.title?.compareTo(a.title ?? '') ?? 0;
+            }
+            if (a.read) {
+              return 1;
+            }
+            return -1;
+          }
       }
     });
 
@@ -58,11 +76,14 @@ class BooksState extends Equatable {
         booksSortOrder: booksSortOrder ?? this.booksSortOrder,
       );
 
-  BooksState replace(Book book) => BooksState(
-        books: Map.from(books)
-          ..remove(book.id)
-          ..putIfAbsent(book.id, () => book),
-      );
+  BooksState replace(Book book) {
+    final map = Map<int, Book>.from(books);
+    map[book.id] = book;
+    return BooksState(
+      books: map,
+      booksSortOrder: booksSortOrder,
+    );
+  }
 }
 
 enum BookProperty {
@@ -70,7 +91,8 @@ enum BookProperty {
   author,
   title,
   year,
-  language;
+  language,
+  read;
 
   bool get isNumeric => this == BookProperty.year;
 
@@ -98,6 +120,7 @@ class Book extends Equatable {
     this.pages,
     this.title,
     this.year,
+    this.read,
   );
 
   final int id;
@@ -109,6 +132,7 @@ class Book extends Equatable {
   final int? pages;
   final String? title;
   final int? year;
+  final bool read;
 
   @override
   List<Object?> get props {
@@ -122,6 +146,7 @@ class Book extends Equatable {
       pages,
       title,
       year,
+      read,
     ];
   }
 
@@ -134,6 +159,7 @@ class Book extends Equatable {
     int? pages,
     String? title,
     int? year,
+    bool? read,
   }) {
     return Book(
       id,
@@ -145,11 +171,13 @@ class Book extends Equatable {
       pages ?? this.pages,
       title ?? this.title,
       year ?? this.year,
+      read ?? this.read,
     );
   }
 
   Book copyWithForProperty({
     String? value,
+    bool? boolValue,
     required BookProperty property,
   }) {
     switch (property) {
@@ -163,6 +191,8 @@ class Book extends Equatable {
         return copyWith(year: int.tryParse(value ?? '') ?? year);
       case BookProperty.language:
         return copyWith(language: value);
+      case BookProperty.read:
+        return copyWith(read: boolValue ?? read);
     }
   }
 
@@ -178,6 +208,8 @@ class Book extends Equatable {
         return year.toString();
       case BookProperty.language:
         return language;
+      case BookProperty.read:
+        return read.toString();
     }
   }
 }

@@ -65,6 +65,14 @@ class BooksActions extends StatelessWidget {
             return null;
           },
         ),
+        ToggleReadIntent: CallbackAction<ToggleReadIntent>(
+          onInvoke: (intent) {
+            context
+                .read<BooksCubit>()
+                .update(intent.book.copyWith(read: !intent.book.read));
+            return null;
+          },
+        ),
       },
       child: child,
     );

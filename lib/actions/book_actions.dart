@@ -89,3 +89,11 @@ class EditCellIntent extends Intent {
 class DismissByLosingFocusIntent extends Intent {
   const DismissByLosingFocusIntent();
 }
+
+class ToggleReadIntent extends Intent {
+  const ToggleReadIntent(
+    this.book,
+  );
+
+  final Book book;
+}

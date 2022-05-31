@@ -18,24 +18,16 @@ class BooksTableView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tableState = context.watch<table.TableCubit<Book>>().state;
-    return ListView.builder(
+    return ListView.separated(
       itemCount: books.length,
+      separatorBuilder: (context, index) => const Divider(height: 1),
       itemBuilder: (context, index) {
         if (index == 0) {
-          return DecoratedBox(
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                ),
-              ),
-            ),
-            child: Row(
-              children: [
-                for (final property in BookProperty.values)
-                  _Header(property: property),
-              ],
-            ),
+          return Row(
+            children: [
+              for (final property in BookProperty.values)
+                _Header(property: property),
+            ],
           );
         }
         final book = books[index - 1];
@@ -55,6 +47,13 @@ class BooksTableView extends StatelessWidget {
                       width: 40,
                       height: 50,
                     ),
+                  )
+                else if (property == BookProperty.read)
+                  Checkbox(
+                    value: book.read,
+                    onChanged: (value) {
+                      Actions.invoke(context, ToggleReadIntent(book));
+                    },
                   )
                 else
                   MyDataCell(
@@ -175,6 +174,8 @@ extension on BookProperty {
         return context.l10n.year;
       case BookProperty.language:
         return context.l10n.language;
+      case BookProperty.read:
+        return context.l10n.readBook;
     }
   }
 }

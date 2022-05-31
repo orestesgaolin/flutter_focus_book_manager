@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:book_manager/books/cubit/books_data.dart';
 import 'package:equatable/equatable.dart';
@@ -21,6 +23,7 @@ class BooksCubit extends Cubit<BooksState> {
           booksData[i]['pages'] as int?,
           booksData[i]['title'] as String?,
           booksData[i]['year'] as int?,
+          Random().nextInt(10).isEven,
         )
     };
 
