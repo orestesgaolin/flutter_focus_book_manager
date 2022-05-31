@@ -39,34 +39,39 @@ class BooksTableView extends StatelessWidget {
           );
         }
         final book = books[index - 1];
-        return Row(
-          children: [
-            for (final property in BookProperty.values)
-              if (property == BookProperty.imageLink)
-                Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: Image.asset(
-                    'assets/${book.imageLink!}',
-                    fit: BoxFit.contain,
-                    width: 40,
-                    height: 50,
+        return ColoredBox(
+          color: index.isEven
+              ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.08)
+              : Theme.of(context).colorScheme.onPrimary.withOpacity(0.25),
+          child: Row(
+            children: [
+              for (final property in BookProperty.values)
+                if (property == BookProperty.imageLink)
+                  Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: Image.asset(
+                      'assets/${book.imageLink!}',
+                      fit: BoxFit.contain,
+                      width: 40,
+                      height: 50,
+                    ),
+                  )
+                else
+                  MyDataCell(
+                    book: book,
+                    property: property,
+                    index: index,
+                    isEdited: tableState.editingLocation?.entity == book &&
+                        tableState.editingLocation?.column == property.index,
+                  )
+            ]
+                .map(
+                  (e) => Expanded(
+                    child: e,
                   ),
                 )
-              else
-                MyDataCell(
-                  book: book,
-                  property: property,
-                  index: index,
-                  isEdited: tableState.editingLocation?.entity == book &&
-                      tableState.editingLocation?.column == property.index,
-                )
-          ]
-              .map(
-                (e) => Expanded(
-                  child: e,
-                ),
-              )
-              .toList(),
+                .toList(),
+          ),
         );
       },
     );
