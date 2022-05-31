@@ -1,6 +1,7 @@
 import 'package:book_manager/books/books.dart';
 import 'package:book_manager/l10n/l10n.dart';
 import 'package:book_manager/table/table.dart';
+import 'package:book_manager/table_copyable/table.dart' as copy;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,14 +12,47 @@ class BooksTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.watch<BooksCubit>().state;
 
-    if (state is BooksInitial) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    final books = (state as BooksLoaded).books;
+    final books = state.booksList;
     return BlocProvider(
-      create: (context) => TableCubit(),
-      child: BooksTableView(books: books),
+      create: (context) => TableCubit<Book>(),
+      child: LayoutBuilder(
+        // builder: (context, box) {
+        //   if (box.maxWidth < 800) {
+        //     return SingleChildScrollView(
+        //       scrollDirection: Axis.horizontal,
+        //       child: BooksActions(child: BooksTableView(books: books)),
+        //     );
+        //   }
+        //   return BooksActions(child: BooksTableView(books: books));
+        // },
+        builder: (context, box) {
+          if (box.maxWidth < 800) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: BooksActions(child: copy.BooksTableView(books: books)),
+            );
+          }
+          return BooksActions(child: copy.BooksTableView(books: books));
+        },
+      ),
     );
+  }
+}
+
+extension on BookProperty {
+  String localized(BuildContext context) {
+    switch (this) {
+      case BookProperty.imageLink:
+        return context.l10n.cover;
+      case BookProperty.author:
+        return context.l10n.authorName;
+      case BookProperty.title:
+        return context.l10n.title;
+      case BookProperty.year:
+        return context.l10n.year;
+      case BookProperty.language:
+        return context.l10n.language;
+    }
   }
 }
 
@@ -32,173 +66,127 @@ class BooksTableView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tableState = context.watch<TableCubit>().state;
+    final tableState = context.watch<TableCubit<Book>>().state;
+
     return DataTable(
       onSelectAll: (x) {},
       sortColumnIndex: tableState.sortOrderColumn,
       sortAscending: tableState.sortAscending,
       columnSpacing: 8,
       columns: <DataColumn>[
-        DataColumn(label: Text(context.l10n.cover)),
-        DataColumn(
-          label: Text(context.l10n.authorName),
-          onSort: (index, sort) {
-            context.read<TableCubit>().setSort(index, sort);
-          },
-        ),
-        DataColumn(
-          label: Text(context.l10n.title),
-          onSort: (index, sort) {
-            context.read<TableCubit>().setSort(index, sort);
-          },
-        ),
-        DataColumn(
-          label: Text(context.l10n.year),
-          onSort: (index, sort) {
-            context.read<TableCubit>().setSort(index, sort);
-          },
-          numeric: true,
-        ),
-        DataColumn(
-          label: Text(context.l10n.language),
-          onSort: (index, sort) {
-            context.read<TableCubit>().setSort(index, sort);
-          },
-        ),
+        for (final property in BookProperty.values)
+          DataColumn(
+            label: Text(property.localized(context)),
+            onSort: property.isSortable
+                ? (index, sort) {
+                    Actions.invoke(context, SortIntent(property.index, sort));
+                  }
+                : null,
+            numeric: property.isNumeric,
+          )
       ],
       rows: List<DataRow>.generate(
         books.length,
-        (index) => DataRow(
-          color: MaterialStateProperty.resolveWith<Color?>(
+        (index) {
+          final book = books[index];
+          return DataRow(
+            color: MaterialStateProperty.resolveWith<Color?>(
               (Set<MaterialState> states) {
-            // All rows will have the same selected color.
-            if (states.contains(MaterialState.selected)) {
-              return Theme.of(context).colorScheme.primary.withOpacity(0.16);
-            }
-            // Even rows will have a grey color.
-            if (index.isEven) {
-              return Theme.of(context).colorScheme.primary.withOpacity(0.08);
-            }
-            return null;
-          }),
-          cells: [
-            if (books[index].imageLink != null)
-              DataCell(
-                Padding(
-                  padding: const EdgeInsets.all(2),
-                  child: Image.asset(
-                    'assets/${books[index].imageLink!}',
-                    fit: BoxFit.cover,
-                    width: 40,
-                    height: 50,
+                // All rows will have the same selected color.
+                if (states.contains(MaterialState.selected)) {
+                  return Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withOpacity(0.16);
+                }
+                // Even rows will have a grey color.
+                if (index.isEven) {
+                  return Theme.of(context)
+                      .colorScheme
+                      .primary
+                      .withOpacity(0.08);
+                }
+                return null;
+              },
+            ),
+            cells: [
+              if (book.imageLink != null)
+                DataCell(
+                  Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: Image.asset(
+                      'assets/${book.imageLink!}',
+                      fit: BoxFit.cover,
+                      width: 40,
+                      height: 50,
+                    ),
                   ),
-                ),
-                onTap: () {},
-              )
-            else
-              DataCell.empty,
-            DataCell(
-              EditableCellContent(
-                book: books[index],
-                index: index,
-                column: 1,
-              ),
-              onTap: () {
-                context.read<TableCubit>().setEditingLocation(index, 1);
-              },
-            ),
-            DataCell(
-              BlocBuilder<TableCubit, TableState>(
-                builder: (context, state) {
-                  if (state.editingLocation ==
-                      TableLocation(row: index, column: 2)) {
-                    return TextFormField(
-                      initialValue: books[index].title,
-                    );
-                  }
-                  return Text(books[index].title ?? '');
-                },
-              ),
-              onTap: () {
-                context.read<TableCubit>().setEditingLocation(index, 2);
-              },
-            ),
-            DataCell(
-              Text(books[index].year.toString()),
-              onTap: () {
-                context.read<TableCubit>().setEditingLocation(index, 3);
-              },
-            ),
-            DataCell(
-              Text(books[index].language ?? ''),
-              onTap: () {
-                context.read<TableCubit>().setEditingLocation(index, 4);
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class EditableCellContent extends StatefulWidget {
-  const EditableCellContent({
-    super.key,
-    required this.book,
-    required this.index,
-    required this.column,
-  });
-
-  final Book book;
-  final int index;
-  final int column;
-
-  @override
-  State<EditableCellContent> createState() => _EditableCellContentState();
-}
-
-class _EditableCellContentState extends State<EditableCellContent> {
-  late TextEditingController controller;
-  late FocusNode focusNode;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = TextEditingController();
-    controller.text = widget.book.author ?? '';
-    // ignore: cascade_invocations
-    controller.selection = TextSelection(
-      baseOffset: 0,
-      extentOffset: widget.book.author?.length ?? 0,
-    );
-    focusNode = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<TableCubit, TableState>(
-      builder: (context, state) {
-        if (state.editingLocation ==
-            TableLocation(row: widget.index, column: widget.column)) {
-          return TextFormField(
-            controller: controller,
-            focusNode: focusNode,
-            style: const TextStyle(fontSize: 14),
-            onFieldSubmitted: (value) {
-              context.read<TableCubit>().save();
-            },
+                )
+              else
+                DataCell.empty,
+              for (final property in BookProperty.values)
+                if (property == BookProperty.author)
+                  DataCell(
+                    EditableCellContent<Book>(
+                      content: book.author,
+                      onModifiedEntity: (value) => book.copyWith(author: value),
+                      isEdited: tableState.editingLocation?.entity == book &&
+                          tableState.editingLocation?.column == property.index,
+                    ),
+                    onTap: () {
+                      context
+                          .read<TableCubit<Book>>()
+                          .setEditingLocation(index, property.index, book);
+                    },
+                  )
+                else if (property == BookProperty.title)
+                  DataCell(
+                    EditableCellContent<Book>(
+                      content: book.title,
+                      onModifiedEntity: (value) => book.copyWith(title: value),
+                      isEdited: tableState.editingLocation?.entity == book &&
+                          tableState.editingLocation?.column == property.index,
+                    ),
+                    onTap: () {
+                      context
+                          .read<TableCubit<Book>>()
+                          .setEditingLocation(index, property.index, book);
+                    },
+                  )
+                else if (property == BookProperty.year)
+                  DataCell(
+                    EditableCellContent<Book>(
+                      content: book.year.toString(),
+                      onModifiedEntity: (value) =>
+                          book.copyWith(year: int.tryParse(value)),
+                      isEdited: tableState.editingLocation?.entity == book &&
+                          tableState.editingLocation?.column == property.index,
+                    ),
+                    onTap: () {
+                      context
+                          .read<TableCubit<Book>>()
+                          .setEditingLocation(index, property.index, book);
+                    },
+                  )
+                else if (property == BookProperty.language)
+                  DataCell(
+                    EditableCellContent<Book>(
+                      content: book.language,
+                      onModifiedEntity: (value) =>
+                          book.copyWith(language: value),
+                      isEdited: tableState.editingLocation?.entity == book &&
+                          tableState.editingLocation?.column == property.index,
+                    ),
+                    onTap: () {
+                      context
+                          .read<TableCubit<Book>>()
+                          .setEditingLocation(index, property.index, book);
+                    },
+                  ),
+            ],
           );
-        }
-        return Text(widget.book.author ?? '');
-      },
+        },
+      ),
     );
   }
 }

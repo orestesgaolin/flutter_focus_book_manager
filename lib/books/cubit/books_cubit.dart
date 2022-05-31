@@ -6,21 +6,40 @@ import 'package:meta/meta.dart';
 part 'books_state.dart';
 
 class BooksCubit extends Cubit<BooksState> {
-  BooksCubit() : super(BooksInitial());
+  BooksCubit() : super(const BooksState(books: {}));
 
   Future<void> initialize() async {
-    final books = booksData.map(
-      (e) => Book(
-        e['author'] as String?,
-        e['country'] as String?,
-        e['imageLink'] as String?,
-        e['language'] as String?,
-        e['link'] as String?,
-        e['pages'] as int?,
-        e['title'] as String?,
-        e['year'] as int?,
-      ),
-    );
-    emit(BooksLoaded(books.toList()));
+    final books = {
+      for (var i = 0; i < booksData.length; i++)
+        i: Book(
+          i,
+          booksData[i]['author'] as String?,
+          booksData[i]['country'] as String?,
+          booksData[i]['imageLink'] as String?,
+          booksData[i]['language'] as String?,
+          booksData[i]['link'] as String?,
+          booksData[i]['pages'] as int?,
+          booksData[i]['title'] as String?,
+          booksData[i]['year'] as int?,
+        )
+    };
+
+    emit(BooksState(books: books));
+  }
+
+  void update(Book book) {
+    emit(state.replace(book));
+  }
+
+  void saveAll() {
+    //booksRepository.saveAll(state.books);
+    emit(state);
+  }
+
+  void setSort(
+    bool ascending,
+    BookProperty property,
+  ) {
+    emit(state.copyWith(booksSortOrder: BooksSortOrder(ascending, property)));
   }
 }

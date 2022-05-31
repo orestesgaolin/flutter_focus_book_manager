@@ -23,14 +23,10 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
-        children: [
-          const HomeNavigationRail(),
+        children: const [
+          HomeNavigationRail(),
           Expanded(
-            child: ListView(
-              children: const [
-                BooksTable(),
-              ],
-            ),
+            child: BooksTable(),
           )
         ],
       ),
@@ -45,28 +41,31 @@ class HomeNavigationRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationRail(
-      selectedIndex: context.watch<HomeNavigationCubit>().state,
-      onDestinationSelected: (index) {
-        context.read<HomeNavigationCubit>().select(index);
-      },
-      destinations: [
-        NavigationRailDestination(
-          icon: const Icon(Icons.home_outlined),
-          selectedIcon: const Icon(Icons.home_filled),
-          label: Text(context.l10n.books),
-        ),
-        NavigationRailDestination(
-          icon: const Icon(Icons.person_outline),
-          selectedIcon: const Icon(Icons.person),
-          label: Text(context.l10n.authors),
-        ),
-        NavigationRailDestination(
-          icon: const Icon(Icons.settings_outlined),
-          selectedIcon: const Icon(Icons.settings),
-          label: Text(context.l10n.settings),
-        ),
-      ],
+    return FocusTraversalGroup(
+      policy: WidgetOrderTraversalPolicy(),
+      child: NavigationRail(
+        selectedIndex: context.watch<HomeNavigationCubit>().state,
+        onDestinationSelected: (index) {
+          context.read<HomeNavigationCubit>().select(index);
+        },
+        destinations: [
+          NavigationRailDestination(
+            icon: const Icon(Icons.home_outlined),
+            selectedIcon: const Icon(Icons.home_filled),
+            label: Text(context.l10n.books),
+          ),
+          NavigationRailDestination(
+            icon: const Icon(Icons.person_outline),
+            selectedIcon: const Icon(Icons.person),
+            label: Text(context.l10n.authors),
+          ),
+          NavigationRailDestination(
+            icon: const Icon(Icons.settings_outlined),
+            selectedIcon: const Icon(Icons.settings),
+            label: Text(context.l10n.settings),
+          ),
+        ],
+      ),
     );
   }
 }

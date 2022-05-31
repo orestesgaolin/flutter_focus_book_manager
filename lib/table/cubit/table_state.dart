@@ -1,28 +1,34 @@
 part of 'table_cubit.dart';
 
-class TableLocation extends Equatable {
+class TableLocation<T> extends Equatable {
   const TableLocation({
     required this.row,
     required this.column,
+    required this.entity,
   });
 
   final int row;
   final int column;
+  final T entity;
 
   @override
-  List<Object?> get props => [row, column];
+  List<Object?> get props => [
+        row,
+        column,
+        entity,
+      ];
 }
 
-class TableState extends Equatable {
+class TableState<T> extends Equatable {
   const TableState({
     this.sortOrderColumn = 1,
-    this.sortAscending = false,
+    this.sortAscending = true,
     this.editingLocation,
   });
 
   final int sortOrderColumn;
   final bool sortAscending;
-  final TableLocation? editingLocation;
+  final TableLocation<T>? editingLocation;
 
   @override
   List<Object?> get props => [
@@ -31,13 +37,13 @@ class TableState extends Equatable {
         editingLocation,
       ];
 
-  TableState copyWith({
+  TableState<T> copyWith({
     int? sortOrderColumn,
     bool? sortAscending,
-    TableLocation? editingLocation,
+    TableLocation<T>? editingLocation,
     bool clearEditingLocation = false,
   }) {
-    return TableState(
+    return TableState<T>(
       sortOrderColumn: sortOrderColumn ?? this.sortOrderColumn,
       sortAscending: sortAscending ?? this.sortAscending,
       editingLocation:
