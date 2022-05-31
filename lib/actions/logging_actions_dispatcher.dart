@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 /// An ActionDispatcher that logs all the actions that it invokes.
@@ -12,7 +10,8 @@ class LoggingActionDispatcher extends ActionDispatcher {
     covariant Intent intent, [
     BuildContext? context,
   ]) {
-    log('Action invoked: $action($intent) from $context');
+    // ignore: avoid_print
+    print('Action invoked: $action($intent) from $context');
     super.invokeAction(action, intent, context);
     if (context != null) {
       showOverlay(context, intent, action);

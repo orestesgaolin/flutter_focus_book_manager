@@ -55,12 +55,15 @@ class _FocusTreeState extends State<FocusTree> {
                 if (timer != null) {
                   timer?.cancel();
                 }
-                timer = Timer(Duration(seconds: 3), () {
-                  final debugTree = debugDescribeFocusTree();
-                  setState(() {
-                    tree = debugTree;
-                  });
-                });
+                timer = Timer(
+                  const Duration(seconds: 3),
+                  () {
+                    final debugTree = debugDescribeFocusTree();
+                    setState(() {
+                      tree = debugTree;
+                    });
+                  },
+                );
               },
             ),
             ElevatedButton(

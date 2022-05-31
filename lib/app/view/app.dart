@@ -86,6 +86,7 @@ class ActionsHandling extends StatelessWidget {
             const SaveAllIntent(),
         LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyC):
             const CopyIntent(),
+        LogicalKeySet(LogicalKeyboardKey.f2): const ActivateIntent(),
       },
       child: const HomePage(),
     );
@@ -98,7 +99,8 @@ class LoggingShortcutManager extends ShortcutManager {
   KeyEventResult handleKeypress(BuildContext context, RawKeyEvent event) {
     final result = super.handleKeypress(context, event);
     if (result == KeyEventResult.handled) {
-      log('Handled shortcut $event in $context');
+      // ignore: avoid_print
+      print('Handled shortcut $event in $context');
     }
     return result;
   }
