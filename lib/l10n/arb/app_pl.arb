@@ -8,5 +8,6 @@
     "books": "Książki",
     "authors": "Autorzy",
     "settings": "Ustawienia",
-    "readBook": "Przeczytana"
+    "readBook": "Przeczytana",
+    "bookManager": "Book Manager"
 }

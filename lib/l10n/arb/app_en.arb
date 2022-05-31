@@ -8,5 +8,6 @@
     "books": "Books",
     "authors": "Authors",
     "settings": "Settings",
-    "readBook": "Book Read"
+    "readBook": "Book Read",
+    "bookManager": "Book Manager"
 }
