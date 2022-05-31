@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 /// An ActionDispatcher that logs all the actions that it invokes.
 class LoggingActionDispatcher extends ActionDispatcher {
+  OverlayEntry? currentOverlay;
+
   @override
   Object? invokeAction(
     covariant Action<Intent> action,
@@ -13,14 +15,22 @@ class LoggingActionDispatcher extends ActionDispatcher {
     log('Action invoked: $action($intent) from $context');
     super.invokeAction(action, intent, context);
     if (context != null) {
-      showOverlay(context, intent);
+      showOverlay(context, intent, action);
     }
 
     return null;
   }
 
-  Future<void> showOverlay(BuildContext context, Intent intent) async {
+  Future<void> showOverlay(
+    BuildContext context,
+    Intent intent,
+    Action<Intent> action,
+  ) async {
     final overlayState = Overlay.of(context);
+
+    if (currentOverlay?.mounted == true) {
+      currentOverlay?.remove();
+    }
 
     final overlayEntry = OverlayEntry(
       builder: (context) {
@@ -34,11 +44,21 @@ class LoggingActionDispatcher extends ActionDispatcher {
                 child: Card(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Text(
-                      'Intent: ${intent.toStringShort()}',
-                      style: const TextStyle(
-                        fontSize: 30,
-                      ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Intent: ${intent.toStringShort()}',
+                          style: const TextStyle(
+                            fontSize: 30,
+                          ),
+                        ),
+                        Text(
+                          'Action: ${action.toStringShort()}',
+                          style: const TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -51,11 +71,16 @@ class LoggingActionDispatcher extends ActionDispatcher {
 
     // Inserting the OverlayEntry into the Overlay
     overlayState?.insert(overlayEntry);
+    currentOverlay = overlayEntry;
 
     // Awaiting for 3 seconds
-    await Future<void>.delayed(const Duration(seconds: 2));
-
-    // Removing the OverlayEntry from the Overlay
-    overlayEntry.remove();
+    await Future<void>.delayed(
+      const Duration(seconds: 2),
+      () {
+        if (overlayEntry.mounted) {
+          overlayEntry.remove();
+        }
+      },
+    );
   }
 }
