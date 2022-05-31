@@ -9,5 +9,6 @@
     "authors": "Autorzy",
     "settings": "Ustawienia",
     "readBook": "Przeczytana",
-    "bookManager": "Book Manager"
+    "bookManager": "Book Manager",
+    "experimentalTable": "Używaj eksperymentalnej tabeli"
 }
