@@ -49,7 +49,7 @@ class App extends StatelessWidget {
           ),
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           useMaterial3: true,
-          fontFamily: GoogleFonts.notoSans().fontFamily,
+          textTheme: GoogleFonts.sourceSansProTextTheme(),
         ).copyWith(
           inputDecorationTheme: const InputDecorationTheme(
             border: InputBorder.none,
@@ -66,7 +66,7 @@ class App extends StatelessWidget {
           ),
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           useMaterial3: true,
-          fontFamily: GoogleFonts.notoSans().fontFamily,
+          textTheme: GoogleFonts.sourceSansProTextTheme(),
         ).copyWith(
           inputDecorationTheme: const InputDecorationTheme(
             border: InputBorder.none,

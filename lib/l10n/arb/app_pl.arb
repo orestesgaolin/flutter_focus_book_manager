@@ -11,5 +11,6 @@
     "readBook": "Przeczytana",
     "bookManager": "Book Manager",
     "experimentalTable": "Używaj eksperymentalnej tabeli",
+    "debugMenu": "Debug Menu",
     "disclaimer": "Aplikacja zbudowana z myślą o dektopie i klawiaturze. Może nie działać prawidłowo na smartfonie."
 }

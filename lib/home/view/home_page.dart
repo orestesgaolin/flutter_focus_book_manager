@@ -4,6 +4,7 @@ import 'package:book_manager/home/view/adaptive_scaffold.dart';
 import 'package:book_manager/l10n/l10n.dart';
 import 'package:book_manager/settings/settings.dart';
 import 'package:book_manager/table/table.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,6 +54,12 @@ class HomeView extends StatelessWidget {
           selectedIcon: Icons.settings,
           title: context.l10n.settings,
         ),
+        if (kDebugMode)
+          AdaptiveScaffoldDestination(
+            icon: Icons.bug_report_outlined,
+            selectedIcon: Icons.bug_report,
+            title: context.l10n.debugMenu,
+          ),
       ],
       body: IndexedStack(
         index: state,
@@ -63,12 +70,17 @@ class HomeView extends StatelessWidget {
           ),
           ExcludeFocus(
             excluding: state != 1,
-            child: const FocusTree(),
+            child: const SizedBox(),
           ),
           ExcludeFocus(
             excluding: state != 2,
             child: const SettingsView(),
           ),
+          if (kDebugMode)
+            ExcludeFocus(
+              excluding: state != 3,
+              child: const FocusTree(),
+            ),
         ],
       ),
     );

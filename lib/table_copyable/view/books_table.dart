@@ -7,6 +7,7 @@ import 'package:book_manager/l10n/l10n.dart';
 import 'package:book_manager/table/table.dart' as table;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const _rowHeight = 60.0;
 
@@ -34,7 +35,10 @@ class BooksTableView extends StatelessWidget {
             return Row(
               children: [
                 for (final property in BookProperty.values)
-                  _Header(property: property),
+                  _Header(
+                    property: property,
+                    sorting: tableState.sortOrderColumn == property.index,
+                  ),
               ]
                   .map(
                     (e) => Expanded(
@@ -149,9 +153,11 @@ class _Header extends StatelessWidget {
   const _Header({
     super.key,
     required this.property,
+    this.sorting = false,
   });
 
   final BookProperty property;
+  final bool sorting;
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +178,10 @@ class _Header extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: Text(
               property.localized(context),
+              style: GoogleFonts.sourceSansPro(
+                fontWeight: FontWeight.bold,
+                decoration: sorting ? TextDecoration.underline : null,
+              ),
             ),
           ),
         ),

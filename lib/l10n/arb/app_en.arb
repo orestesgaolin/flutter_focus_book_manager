@@ -11,5 +11,6 @@
     "readBook": "Book Read",
     "bookManager": "Book Manager",
     "experimentalTable": "Use experimental table",
+    "debugMenu": "Debug Menu",
     "disclaimer": "The app was built with desktop and keyboard in mind. It may not work correctly on mobile"
 }
