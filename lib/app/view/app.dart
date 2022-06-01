@@ -14,7 +14,6 @@ import 'package:book_manager/l10n/l10n.dart';
 import 'package:book_manager/settings/settings.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -46,23 +45,6 @@ class App extends StatelessWidget {
           subThemesData: const FlexSubThemesData(
             blendOnLevel: 20,
             blendOnColors: false,
-          ),
-          visualDensity: FlexColorScheme.comfortablePlatformDensity,
-          useMaterial3: true,
-          textTheme: GoogleFonts.sourceSansProTextTheme(),
-        ).copyWith(
-          inputDecorationTheme: const InputDecorationTheme(
-            border: InputBorder.none,
-          ),
-        ),
-        darkTheme: FlexThemeData.dark(
-          scheme: FlexScheme.greyLaw,
-          surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-          blendLevel: 15,
-          appBarStyle: FlexAppBarStyle.background,
-          appBarOpacity: 0.90,
-          subThemesData: const FlexSubThemesData(
-            blendOnLevel: 30,
           ),
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           useMaterial3: true,
