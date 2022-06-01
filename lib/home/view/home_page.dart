@@ -1,6 +1,5 @@
 import 'package:book_manager/focus_tree/focus_tree.dart';
 import 'package:book_manager/home/home.dart';
-import 'package:book_manager/home/view/adaptive_scaffold.dart';
 import 'package:book_manager/l10n/l10n.dart';
 import 'package:book_manager/settings/settings.dart';
 import 'package:book_manager/table/table.dart';
@@ -15,7 +14,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeNavigationCubit(),
-      child: const HomeView(),
+      child: const WelcomeMessage(
+        child: HomeView(),
+      ),
     );
   }
 }
@@ -44,11 +45,11 @@ class HomeView extends StatelessWidget {
           selectedIcon: Icons.home_filled,
           title: context.l10n.books,
         ),
-        AdaptiveScaffoldDestination(
-          icon: Icons.person_outline,
-          selectedIcon: Icons.person,
-          title: context.l10n.authors,
-        ),
+        // AdaptiveScaffoldDestination(
+        //   icon: Icons.person_outline,
+        //   selectedIcon: Icons.person,
+        //   title: context.l10n.authors,
+        // ),
         AdaptiveScaffoldDestination(
           icon: Icons.settings_outlined,
           selectedIcon: Icons.settings,
@@ -68,17 +69,17 @@ class HomeView extends StatelessWidget {
             excluding: state != 0,
             child: const BooksTable(),
           ),
+          // ExcludeFocus(
+          //   excluding: state != 1,
+          //   child: const SizedBox(),
+          // ),
           ExcludeFocus(
             excluding: state != 1,
-            child: const SizedBox(),
-          ),
-          ExcludeFocus(
-            excluding: state != 2,
             child: const SettingsView(),
           ),
           if (kDebugMode)
             ExcludeFocus(
-              excluding: state != 3,
+              excluding: state != 2,
               child: const FocusTree(),
             ),
         ],

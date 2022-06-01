@@ -12,5 +12,7 @@
     "bookManager": "Book Manager",
     "experimentalTable": "Używaj eksperymentalnej tabeli",
     "debugMenu": "Debug Menu",
+    "homePart1": "Witaj w Book Manager, aplikacji zbudowanej, by pokazać jak obsługiwać focus we Flutterze.",
+    "homePart2": "Kod źródłowy i slajdy znajdziesz w repozytorium na GitHubie.",
     "disclaimer": "Aplikacja zbudowana z myślą o dektopie i klawiaturze. Może nie działać prawidłowo na smartfonie."
 }

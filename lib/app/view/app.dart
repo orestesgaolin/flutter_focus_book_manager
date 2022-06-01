@@ -41,7 +41,7 @@ class App extends StatelessWidget {
         theme: FlexThemeData.light(
           scheme: FlexScheme.greyLaw,
           surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
-          blendLevel: 20,
+          blendLevel: 4,
           appBarOpacity: 0.95,
           subThemesData: const FlexSubThemesData(
             blendOnLevel: 20,

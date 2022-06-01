@@ -51,8 +51,8 @@ class BooksTableView extends StatelessWidget {
           final book = books[index - 1];
           return ColoredBox(
             color: index.isEven
-                ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.08)
-                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.25),
+                ? Theme.of(context).colorScheme.primary.withOpacity(0.08)
+                : Colors.transparent,
             child: Row(
               children: [
                 for (final property in BookProperty.values)

@@ -12,5 +12,7 @@
     "bookManager": "Book Manager",
     "experimentalTable": "Use experimental table",
     "debugMenu": "Debug Menu",
+    "homePart1": "Welcome to Book Manager. This is a sample app used to showcase focus management in Flutter.",
+    "homePart2": "Head over to the GitHub repository for source code and corresponding slides.",
     "disclaimer": "The app was built with desktop and keyboard in mind. It may not work correctly on mobile"
 }

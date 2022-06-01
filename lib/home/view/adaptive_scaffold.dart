@@ -93,7 +93,10 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                   ),
                   for (final d in widget.destinations)
                     ListTile(
-                      leading: Icon(d.icon),
+                      leading:
+                          widget.destinations.indexOf(d) == widget.currentIndex
+                              ? Icon(d.selectedIcon)
+                              : Icon(d.icon),
                       title: Text(d.title),
                       selected:
                           widget.destinations.indexOf(d) == widget.currentIndex,
@@ -131,6 +134,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                   ...widget.destinations.map(
                     (d) => NavigationRailDestination(
                       icon: Icon(d.icon),
+                      selectedIcon: Icon(d.selectedIcon),
                       label: Text(d.title),
                     ),
                   ),
@@ -164,6 +168,7 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
           ...widget.destinations.map(
             (d) => BottomNavigationBarItem(
               icon: Icon(d.icon),
+              activeIcon: Icon(d.selectedIcon),
               label: d.title,
             ),
           ),
