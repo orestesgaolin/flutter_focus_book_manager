@@ -10,5 +10,6 @@
     "settings": "Ustawienia",
     "readBook": "Przeczytana",
     "bookManager": "Book Manager",
-    "experimentalTable": "Używaj eksperymentalnej tabeli"
+    "experimentalTable": "Używaj eksperymentalnej tabeli",
+    "disclaimer": "Aplikacja zbudowana z myślą o dektopie i klawiaturze. Może nie działać prawidłowo na smartfonie."
 }

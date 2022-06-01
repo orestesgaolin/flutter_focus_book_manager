@@ -2,15 +2,16 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:book_manager/ui/ui.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 bool _isLargeScreen(BuildContext context) {
-  return MediaQuery.of(context).size.width > 960.0;
+  return MediaQuery.of(context).size.width > largeScreenBreakpoint;
 }
 
 bool _isMediumScreen(BuildContext context) {
-  return MediaQuery.of(context).size.width > 640.0;
+  return MediaQuery.of(context).size.width > mediumScreenBreakpoint;
 }
 
 /// See bottomNavigationBarItem or NavigationRailDestination

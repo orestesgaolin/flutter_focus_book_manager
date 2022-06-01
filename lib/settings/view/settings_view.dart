@@ -19,6 +19,7 @@ class SettingsView extends StatelessWidget {
             context.read<SettingsCubit>().toggleExperimentalTable();
           },
         ),
+        Text(context.l10n.disclaimer),
       ],
     );
   }
