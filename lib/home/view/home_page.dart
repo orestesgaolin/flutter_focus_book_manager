@@ -1,6 +1,7 @@
 import 'package:book_manager/focus_tree/focus_tree.dart';
 import 'package:book_manager/home/home.dart';
 import 'package:book_manager/l10n/l10n.dart';
+import 'package:book_manager/sandbox/sandbox.dart';
 import 'package:book_manager/settings/settings.dart';
 import 'package:book_manager/table/table.dart';
 import 'package:flutter/foundation.dart';
@@ -55,6 +56,11 @@ class HomeView extends StatelessWidget {
           selectedIcon: Icons.settings,
           title: context.l10n.settings,
         ),
+        AdaptiveScaffoldDestination(
+          icon: Icons.explore_outlined,
+          selectedIcon: Icons.explore,
+          title: 'Focus Sandbox',
+        ),
         if (kDebugMode)
           AdaptiveScaffoldDestination(
             icon: Icons.bug_report_outlined,
@@ -77,9 +83,13 @@ class HomeView extends StatelessWidget {
             excluding: state != 1,
             child: const SettingsView(),
           ),
+          ExcludeFocus(
+            excluding: state != 2,
+            child: const FocusSandboxView(),
+          ),
           if (kDebugMode)
             ExcludeFocus(
-              excluding: state != 2,
+              excluding: state != 3,
               child: const FocusTree(),
             ),
         ],

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 /// An ActionDispatcher that logs all the actions that it invokes.
 class LoggingActionDispatcher extends ActionDispatcher {
-  OverlayEntry? currentOverlay;
+  // OverlayEntry? currentOverlay;
 
   @override
   Object? invokeAction(
@@ -28,9 +28,9 @@ class LoggingActionDispatcher extends ActionDispatcher {
   ) async {
     final overlayState = Overlay.of(context);
 
-    if (currentOverlay?.mounted == true) {
-      currentOverlay?.remove();
-    }
+    // if (currentOverlay?.mounted == true) {
+    //   currentOverlay?.remove();
+    // }
     var intentName = intent.toStringShort();
     var actionName = action.toStringShort();
     if (kProfileMode || kReleaseMode) {
@@ -47,24 +47,36 @@ class LoggingActionDispatcher extends ActionDispatcher {
           child: Stack(
             children: [
               Center(
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Intent: $intentName',
-                          style: const TextStyle(
-                            fontSize: 30,
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween<double>(begin: 1.0, end: 0.0),
+                  duration: Duration(seconds: 2),
+                  curve: Curves.easeInExpo,
+                  builder: (context, value, child) {
+                    return Opacity(
+                      opacity: value,
+                      child: child,
+                    );
+                  },
+                  child: Card(
+                    elevation: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Intent: $intentName',
+                            style: const TextStyle(
+                              fontSize: 30,
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Action: $actionName',
-                          style: const TextStyle(
-                            fontSize: 15,
+                          Text(
+                            'Action: $actionName',
+                            style: const TextStyle(
+                              fontSize: 15,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -77,7 +89,7 @@ class LoggingActionDispatcher extends ActionDispatcher {
 
     // Inserting the OverlayEntry into the Overlay
     overlayState?.insert(overlayEntry);
-    currentOverlay = overlayEntry;
+    // currentOverlay = overlayEntry;
 
     // Awaiting for 3 seconds
     await Future<void>.delayed(
