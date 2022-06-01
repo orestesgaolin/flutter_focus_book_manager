@@ -7,7 +7,7 @@
 
 import 'package:book_manager/actions/actions.dart';
 import 'package:book_manager/app/view/mobile_disclaimer.dart';
-import 'package:book_manager/books/cubit/books_cubit.dart';
+import 'package:book_manager/books/books.dart';
 import 'package:book_manager/books_repository/repository.dart';
 import 'package:book_manager/home/home.dart';
 import 'package:book_manager/l10n/l10n.dart';

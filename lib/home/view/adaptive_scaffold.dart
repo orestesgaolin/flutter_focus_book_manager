@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:book_manager/home/home.dart';
 import 'package:book_manager/ui/ui.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -103,6 +104,8 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
                       onTap: () => _destinationTapped(d),
                       focusNode: focusNodes[d],
                     ),
+                  const Spacer(),
+                  const GitHubLink()
                 ],
               ),
             ),
@@ -127,21 +130,29 @@ class _AdaptiveScaffoldState extends State<AdaptiveScaffold> {
       return Scaffold(
         body: Row(
           children: [
-            FocusTraversalGroup(
-              child: NavigationRail(
-                leading: widget.floatingActionButton,
-                destinations: [
-                  ...widget.destinations.map(
-                    (d) => NavigationRailDestination(
-                      icon: Icon(d.icon),
-                      selectedIcon: Icon(d.selectedIcon),
-                      label: Text(d.title),
+            Column(
+              children: [
+                Flexible(
+                  child: FocusTraversalGroup(
+                    child: NavigationRail(
+                      leading: widget.floatingActionButton,
+                      destinations: [
+                        ...widget.destinations.map(
+                          (d) => NavigationRailDestination(
+                            icon: Icon(d.icon),
+                            selectedIcon: Icon(d.selectedIcon),
+                            label: Text(d.title),
+                          ),
+                        ),
+                      ],
+                      selectedIndex: widget.currentIndex,
+                      onDestinationSelected:
+                          widget.onNavigationIndexChange ?? (_) {},
                     ),
                   ),
-                ],
-                selectedIndex: widget.currentIndex,
-                onDestinationSelected: widget.onNavigationIndexChange ?? (_) {},
-              ),
+                ),
+                const GitHubLink()
+              ],
             ),
             VerticalDivider(
               width: 1,
