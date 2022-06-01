@@ -47,6 +47,7 @@ class _EditableCellContentState<T> extends State<EditableCellContent<T>> {
   void didUpdateWidget(covariant EditableCellContent<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
 
+    // capture focus when changed to edit mode
     if (oldWidget.isEdited == false && widget.isEdited == true) {
       focusNode.requestFocus();
       controller.text = widget.content ?? '';
