@@ -1,5 +1,6 @@
 import 'package:book_manager/actions/actions.dart';
 import 'package:book_manager/books/books.dart';
+import 'package:book_manager/books_repository/books_repository.dart';
 import 'package:book_manager/table/table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,14 +24,10 @@ class BooksActions extends StatelessWidget {
             context.read<BooksCubit>().saveAll();
           },
         ),
-        UnfocusCellIntent: UnfocusCellAction(
+        SaveCellContentIntent: SaveCellContentAction(
           onSave: (value) {
             if (value is Book) {
               context.read<BooksCubit>().update(value);
-              final wasFocused = context.read<TableCubit<Book>>().unfocus();
-              if (wasFocused) {
-                FocusScope.of(context).previousFocus();
-              }
             }
           },
         ),
@@ -42,6 +39,7 @@ class BooksActions extends StatelessWidget {
                 .setSort(ascending, BookProperty.values[column]);
           },
         ),
+        // when pressing Esc or equivalent
         DismissIntent: CallbackAction<DismissIntent>(
           onInvoke: (intent) {
             final wasFocused = context.read<TableCubit<Book>>().unfocus();
@@ -51,6 +49,7 @@ class BooksActions extends StatelessWidget {
             return null;
           },
         ),
+        // when leaving the TextField with Tab
         DismissByLosingFocusIntent: CallbackAction<DismissByLosingFocusIntent>(
           onInvoke: (intent) {
             context.read<TableCubit<Book>>().unfocus();

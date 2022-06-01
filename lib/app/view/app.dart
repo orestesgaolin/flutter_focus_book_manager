@@ -6,7 +6,9 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:book_manager/actions/actions.dart';
+import 'package:book_manager/app/view/mobile_disclaimer.dart';
 import 'package:book_manager/books/cubit/books_cubit.dart';
+import 'package:book_manager/books_repository/repository.dart';
 import 'package:book_manager/home/home.dart';
 import 'package:book_manager/l10n/l10n.dart';
 import 'package:book_manager/settings/settings.dart';
@@ -17,14 +19,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({
+    super.key,
+    required this.booksRepository,
+  });
+
+  final BooksRepository booksRepository;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => BooksCubit()..initialize(),
+          create: (context) => BooksCubit(booksRepository)..initialize(),
         ),
         BlocProvider(
           create: (context) => SettingsCubit(),
@@ -90,7 +97,9 @@ class ActionsHandling extends StatelessWidget {
             const CopyIntent(),
         LogicalKeySet(LogicalKeyboardKey.f2): const ActivateIntent(),
       },
-      child: const HomePage(),
+      child: const MobileDisclaimer(
+        child: HomePage(),
+      ),
     );
   }
 }

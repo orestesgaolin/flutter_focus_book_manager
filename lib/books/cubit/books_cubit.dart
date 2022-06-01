@@ -1,41 +1,30 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:book_manager/books/cubit/books_data.dart';
+import 'package:book_manager/books_repository/books_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 part 'books_state.dart';
 
 class BooksCubit extends Cubit<BooksState> {
-  BooksCubit() : super(const BooksState(books: {}));
+  BooksCubit(this.booksRepository) : super(const BooksState(books: {}));
+
+  final BooksRepository booksRepository;
+  StreamSubscription<Map<int, Book>>? _subscription;
 
   Future<void> initialize() async {
-    final books = {
-      for (var i = 0; i < booksData.length; i++)
-        i: Book(
-          i,
-          booksData[i]['author'] as String?,
-          booksData[i]['country'] as String?,
-          booksData[i]['imageLink'] as String?,
-          booksData[i]['language'] as String?,
-          booksData[i]['link'] as String?,
-          booksData[i]['pages'] as int?,
-          booksData[i]['title'] as String?,
-          booksData[i]['year'] as int?,
-          Random().nextInt(10).isEven,
-        )
-    };
-
-    emit(BooksState(books: books));
+    _subscription = booksRepository.books().listen((event) {
+      emit(state.copyWith(books: event));
+    });
   }
 
   void update(Book book) {
-    emit(state.replace(book));
+    booksRepository.updateBook(book);
   }
 
   void saveAll() {
-    //booksRepository.saveAll(state.books);
+    // booksRepository.saveAll(state.books);
     emit(state);
   }
 
@@ -44,5 +33,11 @@ class BooksCubit extends Cubit<BooksState> {
     BookProperty property,
   ) {
     emit(state.copyWith(booksSortOrder: BooksSortOrder(ascending, property)));
+  }
+
+  @override
+  Future<void> close() {
+    _subscription?.cancel();
+    return super.close();
   }
 }

@@ -6,8 +6,14 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:book_manager/app/app.dart';
+import 'package:book_manager/books_repository/books_repository.dart';
 import 'package:book_manager/bootstrap.dart';
 
 void main() {
-  bootstrap(() => const App());
+  final booksRepository = BooksRepository();
+  bootstrap(
+    () => App(
+      booksRepository: booksRepository,
+    ),
+  );
 }

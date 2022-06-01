@@ -1,4 +1,4 @@
-import 'package:book_manager/books/books.dart';
+import 'package:book_manager/books_repository/books_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,19 +20,19 @@ class SaveAllAction extends Action<SaveAllIntent> {
   }
 }
 
-class UnfocusCellIntent extends Intent {
-  const UnfocusCellIntent(this.entity);
+class SaveCellContentIntent extends Intent {
+  const SaveCellContentIntent(this.entity);
 
   final Object entity;
 }
 
-class UnfocusCellAction extends Action<UnfocusCellIntent> {
-  UnfocusCellAction({required this.onSave});
+class SaveCellContentAction extends Action<SaveCellContentIntent> {
+  SaveCellContentAction({required this.onSave});
 
   final Function(Object) onSave;
 
   @override
-  Object? invoke(covariant UnfocusCellIntent intent) {
+  Object? invoke(covariant SaveCellContentIntent intent) {
     onSave(intent.entity);
     return null;
   }
@@ -83,6 +83,7 @@ class EditCellIntent extends Intent {
   );
   final int row;
   final int column;
+  // cannot use <T> because Actions seem not to recognize generic types
   final Book book;
 }
 

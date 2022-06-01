@@ -1,9 +1,11 @@
 import 'package:book_manager/actions/actions.dart';
 import 'package:book_manager/books/books.dart';
+import 'package:book_manager/books_repository/books_repository.dart';
 import 'package:book_manager/l10n/l10n.dart';
 import 'package:book_manager/settings/cubit/settings_cubit.dart';
 import 'package:book_manager/table/table.dart';
 import 'package:book_manager/table_copyable/table.dart' as copy;
+import 'package:book_manager/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,36 +21,38 @@ class BooksTable extends StatelessWidget {
     final books = state.booksList;
     return BlocProvider(
       create: (context) => TableCubit<Book>(),
-      child: LayoutBuilder(
-        builder: (context, box) {
-          if (experimentalTable) {
-            if (box.maxWidth < 800) {
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: BooksActions(
-                  child: copy.BooksTableView(
-                    books: books,
-                    horizontallyScrollable: true,
+      child: BookShortcuts(
+        child: BooksActions(
+          child: LayoutBuilder(
+            builder: (context, box) {
+              if (experimentalTable) {
+                if (box.maxWidth < scrollableTableBreakpoint) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: BooksActions(
+                      child: copy.BooksTableView(
+                        books: books,
+                        horizontallyScrollable: true,
+                      ),
+                    ),
+                  );
+                }
+                return copy.BooksTableView(books: books);
+              }
+              if (box.maxWidth < scrollableTableBreakpoint) {
+                return SingleChildScrollView(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: BooksTableView(books: books),
                   ),
-                ),
+                );
+              }
+              return SingleChildScrollView(
+                child: BooksTableView(books: books),
               );
-            }
-            return BooksActions(child: copy.BooksTableView(books: books));
-          }
-          if (box.maxWidth < 800) {
-            return SingleChildScrollView(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: BooksActions(child: BooksTableView(books: books)),
-              ),
-            );
-          }
-          return SingleChildScrollView(
-            child: BooksActions(
-              child: BooksTableView(books: books),
-            ),
-          );
-        },
+            },
+          ),
+        ),
       ),
     );
   }

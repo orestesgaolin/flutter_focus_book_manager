@@ -72,9 +72,9 @@ class _EditableCellContentState<T> extends State<EditableCellContent<T>> {
         ),
         style: const TextStyle(fontSize: 14),
         onFieldSubmitted: (value) {
-          Actions.invoke<UnfocusCellIntent>(
+          Actions.invoke<SaveCellContentIntent>(
             context,
-            UnfocusCellIntent(widget.onModifiedEntity(value) as Object),
+            SaveCellContentIntent(widget.onModifiedEntity(value) as Object),
           );
         },
       );
