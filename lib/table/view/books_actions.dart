@@ -50,7 +50,8 @@ class BooksActions extends StatelessWidget {
           },
         ),
         // when leaving the TextField with Tab
-        DismissByLosingFocusIntent: CallbackAction<DismissByLosingFocusIntent>(
+        DismissDueToLosingFocusIntent:
+            CallbackAction<DismissDueToLosingFocusIntent>(
           onInvoke: (intent) {
             context.read<TableCubit<Book>>().unfocus();
             return null;

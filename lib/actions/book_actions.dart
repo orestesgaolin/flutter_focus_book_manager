@@ -87,8 +87,8 @@ class EditCellIntent extends Intent {
   final Book book;
 }
 
-class DismissByLosingFocusIntent extends Intent {
-  const DismissByLosingFocusIntent();
+class DismissDueToLosingFocusIntent extends Intent {
+  const DismissDueToLosingFocusIntent();
 }
 
 class ToggleReadIntent extends Intent {

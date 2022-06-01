@@ -30,7 +30,7 @@ class _EditableCellContentState<T> extends State<EditableCellContent<T>> {
       if (focusNode.hasPrimaryFocus == false) {
         Actions.invoke(
           context,
-          const DismissByLosingFocusIntent(),
+          const DismissDueToLosingFocusIntent(),
         );
       }
     });
