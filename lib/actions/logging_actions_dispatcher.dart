@@ -31,8 +31,12 @@ class LoggingActionDispatcher extends ActionDispatcher {
     if (currentOverlay?.mounted == true) {
       currentOverlay?.remove();
     }
-    final intentName = intent.toStringShort();
-    final actionName = action.toStringShort();
+    var intentName = intent.toStringShort();
+    var actionName = action.toStringShort();
+    if (kProfileMode || kReleaseMode) {
+      intentName = intent.runtimeType.toString();
+      actionName = action.runtimeType.toString();
+    }
 
     final overlayEntry = OverlayEntry(
       builder: (context) {
