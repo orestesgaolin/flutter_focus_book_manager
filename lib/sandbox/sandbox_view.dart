@@ -76,11 +76,10 @@ class _FocusSandboxViewState extends State<FocusSandboxView> {
                   focusNode: focusNodes[index],
                   shortcuts: {
                     const SingleActivator(LogicalKeyboardKey.escape):
-                        MySimpleUnfocusIntent(),
+                        UnfocusIntent(),
                   },
                   actions: {
-                    MySimpleUnfocusIntent:
-                        CallbackAction<MySimpleUnfocusIntent>(
+                    UnfocusIntent: CallbackAction<UnfocusIntent>(
                       onInvoke: (_) {
                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -139,4 +138,4 @@ class _FocusSandboxViewState extends State<FocusSandboxView> {
   }
 }
 
-class MySimpleUnfocusIntent extends Intent {}
+class UnfocusIntent extends Intent {}
