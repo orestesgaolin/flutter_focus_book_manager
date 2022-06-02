@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FocusTree extends StatefulWidget {
   const FocusTree({
@@ -32,7 +33,10 @@ class _FocusTreeState extends State<FocusTree> {
         Expanded(
           child: SingleChildScrollView(
             primary: false,
-            child: SelectableText(tree ?? ''),
+            child: SelectableText(
+              tree ?? '',
+              style: GoogleFonts.firaMono(fontSize: 14),
+            ),
           ),
         ),
         Wrap(
