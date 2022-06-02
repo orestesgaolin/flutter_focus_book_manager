@@ -18,11 +18,10 @@ class AppShortcuts extends StatelessWidget {
         const SingleActivator(LogicalKeyboardKey.save): const SaveAllIntent(),
         LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyS):
             const SaveAllIntent(),
-        LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyA):
-            Intent.doNothing,
+
         LogicalKeySet(LogicalKeyboardKey.meta, LogicalKeyboardKey.keyC):
             const CopyIntent(),
-        LogicalKeySet(LogicalKeyboardKey.f2): const ActivateIntent(),
+        const SingleActivator(LogicalKeyboardKey.f2): const ActivateIntent(),
         // other ways:
         const CharacterActivator('x'): Intent.doNothing,
         const SingleActivator(LogicalKeyboardKey.comma): Intent.doNothing,
