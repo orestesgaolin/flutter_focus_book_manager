@@ -56,7 +56,7 @@ class HomeView extends StatelessWidget {
           selectedIcon: Icons.settings,
           title: context.l10n.settings,
         ),
-        AdaptiveScaffoldDestination(
+        const AdaptiveScaffoldDestination(
           icon: Icons.explore_outlined,
           selectedIcon: Icons.explore,
           title: 'Focus Sandbox',

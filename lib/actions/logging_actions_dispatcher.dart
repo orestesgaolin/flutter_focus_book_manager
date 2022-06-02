@@ -48,8 +48,8 @@ class LoggingActionDispatcher extends ActionDispatcher {
             children: [
               Center(
                 child: TweenAnimationBuilder<double>(
-                  tween: Tween<double>(begin: 1.0, end: 0.0),
-                  duration: Duration(seconds: 2),
+                  tween: Tween<double>(begin: 1, end: 0),
+                  duration: const Duration(seconds: 2),
                   curve: Curves.easeInExpo,
                   builder: (context, value, child) {
                     return Opacity(
