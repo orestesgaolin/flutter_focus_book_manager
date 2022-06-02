@@ -14,6 +14,7 @@ class _FocusSandboxViewState extends State<FocusSandboxView> {
   int? _focused;
   int? _hovering;
   final scrollController = ScrollController();
+  String lastKey = '';
 
   @override
   void initState() {
@@ -52,7 +53,14 @@ class _FocusSandboxViewState extends State<FocusSandboxView> {
           child: FocusScope(
             debugLabel: 'grid_focus_scope',
             onKey: (node, key) {
-              print('Key handled: ${key.character}');
+              final keyLabel = key.logicalKey.keyLabel;
+              final shift = key.isShiftPressed &&
+                      key.logicalKey != LogicalKeyboardKey.shiftLeft
+                  ? 'shift +'
+                  : '';
+              setState(() {
+                lastKey = '$shift$keyLabel';
+              });
               return KeyEventResult.ignored;
             },
             child: GridView.builder(
@@ -81,6 +89,7 @@ class _FocusSandboxViewState extends State<FocusSandboxView> {
                           ),
                         );
                         focusNodes[index].unfocus();
+                        return null;
                       },
                     ),
                   },
@@ -120,6 +129,10 @@ class _FocusSandboxViewState extends State<FocusSandboxView> {
               },
             ),
           ),
+        ),
+        Text(
+          'Recent key: $lastKey',
+          style: const TextStyle(fontSize: 37),
         ),
       ],
     );
