@@ -45,75 +45,83 @@ class _FocusSandboxViewState extends State<FocusSandboxView> {
 
   @override
   Widget build(BuildContext context) {
-    return FocusScope(
-      debugLabel: 'grid_focus_scope',
-      onKey: (node, key) {
-        print('Key handled: ${key.character}');
-        return KeyEventResult.ignored;
-      },
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 6,
-          mainAxisSpacing: 12,
-          crossAxisSpacing: 12,
-        ),
-        controller: scrollController,
-        itemCount: count,
-        itemBuilder: (context, index) {
-          return FocusableActionDetector(
-            focusNode: focusNodes[index],
-            shortcuts: {
-              const SingleActivator(LogicalKeyboardKey.escape):
-                  MySimpleUnfocusIntent(),
+    return Column(
+      children: [
+        const Text('FocusableActionDetector'),
+        Expanded(
+          child: FocusScope(
+            debugLabel: 'grid_focus_scope',
+            onKey: (node, key) {
+              print('Key handled: ${key.character}');
+              return KeyEventResult.ignored;
             },
-            actions: {
-              MySimpleUnfocusIntent: CallbackAction<MySimpleUnfocusIntent>(
-                onInvoke: (_) {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Unfocusing $index'),
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 6,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+              ),
+              controller: scrollController,
+              itemCount: count,
+              itemBuilder: (context, index) {
+                return FocusableActionDetector(
+                  focusNode: focusNodes[index],
+                  shortcuts: {
+                    const SingleActivator(LogicalKeyboardKey.escape):
+                        MySimpleUnfocusIntent(),
+                  },
+                  actions: {
+                    MySimpleUnfocusIntent:
+                        CallbackAction<MySimpleUnfocusIntent>(
+                      onInvoke: (_) {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Unfocusing $index'),
+                          ),
+                        );
+                        focusNodes[index].unfocus();
+                      },
                     ),
-                  );
-                  focusNodes[index].unfocus();
-                },
-              ),
-            },
-            onShowFocusHighlight: (val) =>
-                _handleFocusHighlight(val ? index : null),
-            onShowHoverHighlight: (val) =>
-                _handleHoverHighlight(val ? index : null),
-            child: SizedBox.square(
-              child: GestureDetector(
-                onTap: () {
-                  focusNodes[index].requestFocus();
-                },
-                child: ColoredBox(
-                  color: _hovering == index
-                      ? Colors.grey.withOpacity(0.2)
-                      : _focused == index
-                          ? Colors.grey
-                          : Colors.transparent,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('$index'),
-                      if (_hovering == index)
-                        const Text('Hovered')
-                      else
-                        const Text(''),
-                      if (_focused == index)
-                        const Text('Focused')
-                      else
-                        const Text(''),
-                    ],
+                  },
+                  onShowFocusHighlight: (val) =>
+                      _handleFocusHighlight(val ? index : null),
+                  onShowHoverHighlight: (val) =>
+                      _handleHoverHighlight(val ? index : null),
+                  child: SizedBox.square(
+                    child: GestureDetector(
+                      onTap: () {
+                        focusNodes[index].requestFocus();
+                      },
+                      child: ColoredBox(
+                        color: _hovering == index
+                            ? Colors.grey.withOpacity(0.2)
+                            : _focused == index
+                                ? Colors.grey
+                                : Colors.transparent,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('$index'),
+                            if (_hovering == index)
+                              const Text('Hovered')
+                            else
+                              const Text(''),
+                            if (_focused == index)
+                              const Text('Focused')
+                            else
+                              const Text(''),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
   }
 }
